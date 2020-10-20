@@ -1,8 +1,7 @@
-import React,{useEffect, useState} from 'react'
-import PageDate from './about';
+import React,{useEffect, useState, Suspense} from 'react'
 import Container from '@material-ui/core/Container';
 import {getArticles} from '../api'
-
+import PageData from './page_data'
 const Main =() => {
   const [data, setData] = useState()
   const [loading, setLoading] = useState(true)
@@ -17,7 +16,7 @@ const Main =() => {
   },[])
   return(
     <Container maxWidth="lg" style={{marginTop: 40}}>
-      <PageDate data={data} loading={loading}  />
+        <PageData data={data} loading={loading}  />
     </Container>
   )
 }
