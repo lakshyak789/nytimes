@@ -1,10 +1,8 @@
-import React,{useEffect, useState, Suspense} from 'react'
+import React,{useEffect, useState, useCallback} from 'react'
 import Container from '@material-ui/core/Container';
 import {getArticles} from '../api'
 import dynamic from 'next/dynamic'
-import Pagination from '@material-ui/lab/Pagination';
-import Grid from '@material-ui/core/Grid';
-
+import { useBottomScrollListener } from 'react-bottom-scroll-listener'
 const PageData = dynamic(() => import('./page_data'))
 
 const Main =() => {
@@ -13,8 +11,9 @@ const Main =() => {
   const [currentPage, setCurrentPage] = useState(1)
   const [dataPerPage, setDataPerPage] = useState(9)
   const [indexOfLastTodo, setIndexOfLastTodo] = useState()
-  const [indexOfFirstTodo, setIndexOfFirstTodo] = useState()
-  const [pageNumbers, setPageNumbers] = useState([])
+  const [indexOfFirstTodo, setIndexOfFirstTodo] = useState(1)
+  const [pageNumbers, setPageNumbers] = useState(1)
+  let pageNo = 1
 
   useEffect(()=>{
     (async function getArticlesData() {
@@ -25,24 +24,28 @@ const Main =() => {
       }
     })();  
   },[])
+  
   useEffect(()=>{
     if(data !== undefined){
         setPageNumbers(Math.ceil(data.length / dataPerPage))
       }
   },[data])
 
+  const handleOnDocumentBottom = useCallback(() => {
+    console.log("bottom",pageNumbers, currentPage)
+    if(currentPage <= pageNumbers){
+      pageNo = pageNo + 1
+      setCurrentPage(pageNo)
+    }
+  }, [])
+
   useEffect(()=>{
     setIndexOfLastTodo(currentPage * dataPerPage)
-    setIndexOfFirstTodo(indexOfLastTodo - dataPerPage)
   })
+  useBottomScrollListener(handleOnDocumentBottom)
   return(
-    <Container maxWidth="lg" style={{marginTop: 40}}>
-        <PageData data={data} loading={loading} indexOfFirstTodo={indexOfFirstTodo} indexOfLastTodo={indexOfLastTodo}/>
-        <Grid container spacing={6}>
-          <Grid item xs={12} >
-            <Pagination variant="outlined" color="primary" count={pageNumbers} page={currentPage} onChange={(e, value)=> setCurrentPage(value)} />
-          </Grid>
-        </Grid>
+    <Container maxWidth="lg" style={{marginTop: 40}} >
+        <PageData data={data} loading={loading} indexOfFirstTodo={indexOfFirstTodo} indexOfLastTodo={indexOfLastTodo} />
     </Container>
   )
 }
