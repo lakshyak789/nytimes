@@ -45,7 +45,7 @@ const PageData = (props) => {
   const classes = useStyles();
   const [result, setResult] = useState([]);
   const [btnKey, setBtnKey] = useState();
-  const { data, loading } = props;
+  const { data, loading , indexOfFirstTodo, indexOfLastTodo} = props;
   const ellipsify = (str) => {
     if (str.length > 60) {
         return (str.substring(0, 60) + "...");
@@ -63,7 +63,7 @@ const PageData = (props) => {
   return (
     <div className={""}>
       <Grid container spacing={3} xs={12}>
-        { (loading ? Array.from(new Array(6)) : result).map((result, key) => (
+        { (loading ? Array.from(new Array(6)) : result).slice(indexOfFirstTodo, indexOfLastTodo).map((result, key) => (
           <Grid item md={4} key={key} >
             <Card className={classes.root} onMouseOver={()=> setBtnKey(key)} onMouseLeave={()=> setBtnKey(null)}>
              
