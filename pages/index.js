@@ -5,9 +5,8 @@ import dynamic from 'next/dynamic'
 import Pagination from '@material-ui/lab/Pagination';
 import Grid from '@material-ui/core/Grid';
 
-const PageData = dynamic(() => import('./page_data'),
-  { loading: () => <p>loading ...</p> })
-  
+const PageData = dynamic(() => import('./page_data'))
+
 const Main =() => {
   const [data, setData] = useState()
   const [loading, setLoading] = useState(true)
