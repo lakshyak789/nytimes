@@ -63,7 +63,7 @@ const PageData = (props) => {
   return (
     <div className={""}>
       <Grid container spacing={3} xs={12}>
-        { (loading ? Array.from(new Array(6)) : result).slice(indexOfFirstTodo, indexOfLastTodo).map((result, key) => (
+        { (loading ? Array.from(new Array(9)) : result).slice(indexOfFirstTodo, indexOfLastTodo).map((result, key) => (
           <Grid item md={4} key={key} >
             <Card className={classes.root} onMouseOver={()=> setBtnKey(key)} onMouseLeave={()=> setBtnKey(null)}>
              
@@ -77,7 +77,7 @@ const PageData = (props) => {
               >
                 <Button  variant="contained" target="_blank" color="primary" className={btnKey === key ? classes.readBtn : classes.hideBtn} href={result.url}>Read</Button>
                 </CardMedia>
-              ) : ( <Skeleton variant="rect" width={210} height={118} />)}
+              ) : ( <Skeleton variant="rect" width={250} height={250} />)}
                 {result ? (
                    <CardContent>
                    <Typography gutterBottom variant="h6" component="h5" className={classes.text}>
@@ -117,7 +117,7 @@ const PageData = (props) => {
                  </CardContent>
                 ): (
               <>
-              <Skeleton />
+              <Skeleton width="90%"/>
               <Skeleton width="60%" />
               </>)}
                
